@@ -350,7 +350,7 @@ function exportCsv(){const R=tableRows(),q=v=>'"'+String(v).replace(/"/g,'""')+'
     out.push(r.map(q).join(','))});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out.join('\n')],{type:'text/csv'}));a.download='hub_status.csv';a.click()}
 
-(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 10 Oct 2026, 00:32');
+(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 10 Oct 2026, 01:02');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseSheet(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
