@@ -88,7 +88,7 @@ thead tr:nth-child(1) th{top:0}
 thead tr:nth-child(2) th{top:34px}
 thead tr:nth-child(3) th{top:68px;cursor:default;font-size:13px;font-weight:800}
 .dh{text-align:center;font-size:13px;cursor:default;color:var(--navy);border-left:2px solid #fff}
-.d0{background:#d6e4f2}.d1{background:#e3dcef}.d2{background:#d7ece6}.d3{background:#f1e6d3}
+.d0{background:#d6e4f2}.d1{background:#e3dcef}.d2{background:#d7ece6}.d3{background:#f1e6d3}.dov{background:#cfd8e3}
 .c-p{background:#d5e7e0}.c-f,.c-n{background:#eee2c4}.c-a{background:#eed3d1}.c-t{background:#d3e0ee}.c-s{background:#ded7ea}
 .tot-p{background:#eaf3ef}.tot-f,.tot-n{background:#f7f0de}.tot-a{background:#f7e8e7}.tot-t{background:#e8eff7}.tot-s{background:#f0ecf5}
 .sl{position:sticky;text-align:left;z-index:2;overflow:hidden;text-overflow:ellipsis}
@@ -311,7 +311,8 @@ function group(id,L,d,key,title,tid,hid){
 /* ---- table ---- */
 const IDC=[['rm','RM','s1'],['am','AM','s2'],['hub','HubName','s3'],['city','City',''],['state','State',''],['tier','Tier','']];
 const SUB=[['p','Plan','c-p'],['a','Actual','c-a'],['t','Attainment','c-t'],['s','Spillage','c-s']];
-function sval(h,k){if(IDC.some(c=>c[0]==k))return h[k];const t=k[0],i=+k.slice(1);
+function ovOf(h){let p=0,a=0,sn=0,sc=0;for(let i=0;i<=LA;i++){p+=h.p[i]||0;a+=h.a[i]||0;if(h.s[i]!=null){sn+=h.s[i];sc++}}return{p,a,t:att(p,a),s:sc?sn/sc:null}}
+function sval(h,k){if(IDC.some(c=>c[0]==k))return h[k];if(k[0]=='o'){const o=ovOf(h);return o[k[1]]}const t=k[0],i=+k.slice(1);
   return t=='t'?att(h.p[i],h.a[i]):t=='s'?h.s[i]:h[t][i]}
 function tableRows(){const q=$('q').value.trim().toLowerCase();
   let r=LIST.filter(h=>!q||[h.hub,h.city,h.rm,h.am,h.state].some(x=>x.toLowerCase().includes(q)));
@@ -321,14 +322,17 @@ function renderTable(){
   const R=tableRows(),ps=+$('pgSize').value,pages=Math.max(1,Math.ceil(R.length/ps));page=Math.max(0,Math.min(page,pages-1));
   const arr=k=>S.k==k?(S.dir==1?' ▲':' ▼'):'';
   let h1='<tr>'+IDC.map(c=>`<th rowspan="2" class="sl ${c[2]} ${c[2]?'':'l'}" data-k="${c[0]}" style="${c[2]?'':'position:sticky;background:#e9eef4;z-index:4;'}text-align:left">${c[1]}${arr(c[0])}</th>`).join('');
+  h1+=`<th colspan="4" class="dh dov">Overall (till ${D.dates[LA]})</th>`;
   D.dates.forEach((x,i)=>h1+=`<th colspan="4" class="dh d${i%4}">${x}-26</th>`);
-  let h2='<tr>';D.dates.forEach((_,i)=>SUB.forEach((s,j)=>h2+=`<th class="${s[2]}${j==0?' db':''}" data-k="${s[0]}${i}">${s[1]}${arr(s[0]+i)}</th>`));
+  let h2='<tr>';SUB.forEach((s,j)=>h2+=`<th class="${s[2]}${j==0?' db':''}" data-k="o${s[0]}">${s[1]}${arr('o'+s[0])}</th>`);D.dates.forEach((_,i)=>SUB.forEach((s,j)=>h2+=`<th class="${s[2]}${j==0?' db':''}" data-k="${s[0]}${i}">${s[1]}${arr(s[0]+i)}</th>`));
   let h3='<tr><th class="sl s1 l" style="text-align:left">Total</th><th class="sl s2"></th><th class="sl s3 l" style="text-align:left">'+LIST.length+' hubs</th><th></th><th></th><th></th>';
+  {const O=LIST.map(ovOf),p=sum(O,x=>x.p),a=sum(O,x=>x.a);h3+=`<th class="tot-p db">${fmt(p)}</th><th class="tot-a">${fmt(a)}</th><th class="tot-t">${pc(att(p,a))}</th><th class="tot-s"></th>`}
   D.dates.forEach((_,i)=>{const p=sum(LIST,x=>x.p[i]),a=sum(LIST,x=>x.a[i]),t=att(p,a),fu=i>LA?' fut':'';
     h3+=`<th class="tot-p db${fu}">${fmt(p)}</th><th class="tot-a${fu}">${fmt(a)}</th><th class="tot-t${fu}">${pc(t)}</th><th class="tot-s"></th>`});
   const sl=['s1','s2','s3'];
   let body='';R.slice(page*ps,page*ps+ps).forEach(h=>{
     body+=`<tr><td class="sl s1">${h.rm}</td><td class="sl s2">${h.am}</td><td class="sl s3" title="${h.hub}">${h.hub}</td><td class="l">${h.city}</td><td class="l">${h.state}</td><td class="l">${h.tier}</td>`;
+    {const o=ovOf(h);body+=`<td class="db">${fmt(o.p)}</td><td>${fmt(o.a)}</td><td class="att t-${band(o.t)}">${pc(o.t)}</td><td>${o.s==null?'':o.s.toFixed(2)}</td>`}
     D.dates.forEach((_,i)=>{const t=att(h.p[i],h.a[i]),fu=i>LA,c=fu?' fut':'';
       body+=`<td class="db${c}">${fmt(h.p[i])}</td><td class="${c}">${fmt(h.a[i])}</td>`+
         `<td class="att ${fu?'fut':'t-'+band(t)}">${pc(t)}</td><td class="${c}">${h.s[i]==null?'':h.s[i].toFixed(2)}</td>`})
@@ -339,14 +343,14 @@ function renderTable(){
   $('prev').disabled=page<=0;$('next').disabled=page>=pages-1}
 
 function exportCsv(){const R=tableRows(),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
-  const head=['RM','AM','HubName','City','State','Tier'];D.dates.forEach(x=>SUB.forEach(s=>head.push(x+' '+s[1])));
+  const head=['RM','AM','HubName','City','State','Tier'];SUB.forEach(s=>head.push('Overall '+s[1]));D.dates.forEach(x=>SUB.forEach(s=>head.push(x+' '+s[1])));
   const out=[head.map(q).join(',')];
-  R.forEach(h=>{const r=[h.rm,h.am,h.hub,h.city,h.state,h.tier];
+  R.forEach(h=>{const r=[h.rm,h.am,h.hub,h.city,h.state,h.tier];{const o=ovOf(h);r.push(o.p,o.a,o.t==null?'':Math.round(o.t)+'%',o.s==null?'':o.s.toFixed(2))}
     D.dates.forEach((_,i)=>{const t=att(h.p[i],h.a[i]);r.push(h.p[i],h.a[i],t==null?'':Math.round(t)+'%',h.s[i]==null?'':h.s[i])});
     out.push(r.map(q).join(','))});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out.join('\n')],{type:'text/csv'}));a.download='hub_status.csv';a.click()}
 
-(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 12:50');
+(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 13:14');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseSheet(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
