@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Van check-in | East zone</title>
+<title>Van check-in | WSOC cluster</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -87,7 +87,7 @@ th{position:sticky;top:0;background:#e9eef4;font-weight:700;font-size:12px;z-ind
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <div><h1>Van check-in timing: East zone</h1><div class="sub">Van check-in timing summary, hub by hub</div></div>
+  <div><h1>Van check-in timing: WSOC cluster</h1><div class="sub">Van check-in timing summary, hub by hub</div></div>
   <div class="asof"><span id="srcLabel"></span><b id="asofDate">-</b></div>
 </div></header>
 
@@ -299,7 +299,7 @@ function renderTable(){const R=tableRows(),ps=+$('pgSize').value,pages=Math.max(
 function exportHubs(){const R=tableRows();
   dl([COLS.map(c=>c[1]),...R.map(h=>{return[h.hub,h.type,h.region,h.rm,h.am,h.partner,h.vp,h.va,tm(h.mins)==='-'?'':tm(h.mins),h.tb?bl(h.tb):'']})],'hub_van_status.csv')}
 
-(function load(){const emb=()=>init(parseData(EMBED),'Refreshed 09 Oct 2026, 22:02');
+(function load(){const emb=()=>init(parseData(EMBED),'Refreshed 09 Oct 2026, 22:08');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseData(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
