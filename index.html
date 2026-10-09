@@ -35,8 +35,8 @@ select:focus,.btn:focus-visible,input:focus{border-color:var(--steel);box-shadow
 .btn.pri:hover{background:#2a4565}
 .count{font-size:12.5px;color:var(--mute);margin:-6px 0 14px 2px}
 .count b{color:var(--ink)}
-.hero{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-bottom:18px}
-.gauge{display:flex;align-items:center;gap:22px}
+.hero{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:18px}
+.gauge{display:none;align-items:center;gap:22px}
 .ring{--p:0;--c:var(--b);width:150px;height:150px;border-radius:50%;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),#e4eaf1 0);display:grid;place-items:center}
 .ring>div{width:114px;height:114px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring strong{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1}
@@ -346,7 +346,7 @@ function exportCsv(){const R=tableRows(),q=v=>'"'+String(v).replace(/"/g,'""')+'
     out.push(r.map(q).join(','))});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out.join('\n')],{type:'text/csv'}));a.download='hub_status.csv';a.click()}
 
-(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 10:12');
+(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 10:27');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseSheet(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
