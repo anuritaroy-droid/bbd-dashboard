@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BBD Sale '26 | East zone performance</title>
+<title>BBD Sale '26 | WSOC performance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -111,7 +111,7 @@ td.att{font-weight:700;text-align:center}
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <div><h1>BBD Sale '26: East zone performance</h1><div class="sub">EKL overall plan vs actual, hub by hub and day by day</div></div>
+  <div><h1>BBD Sale '26: WSOC performance</h1><div class="sub">EKL overall plan vs actual, hub by hub and day by day</div></div>
   <div class="asof"><span id="srcLabel"></span><b id="asofDate">-</b></div>
 </div></header>
 
@@ -350,7 +350,7 @@ function exportCsv(){const R=tableRows(),q=v=>'"'+String(v).replace(/"/g,'""')+'
     out.push(r.map(q).join(','))});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out.join('\n')],{type:'text/csv'}));a.download='hub_status.csv';a.click()}
 
-(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 22:02');
+(function load(){const emb=()=>init(parseSheet(EMBED),'Refreshed 09 Oct 2026, 22:08');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseSheet(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
