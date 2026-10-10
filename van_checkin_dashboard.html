@@ -299,7 +299,7 @@ function renderTable(){const R=tableRows(),ps=+$('pgSize').value,pages=Math.max(
 function exportHubs(){const R=tableRows();
   dl([COLS.map(c=>c[1]),...R.map(h=>{return[h.hub,h.type,h.region,h.rm,h.am,h.partner,h.vp,h.va,tm(h.mins)==='-'?'':tm(h.mins),h.tb?bl(h.tb):'']})],'hub_van_status.csv')}
 
-(function load(){const emb=()=>init(parseData(EMBED),'Refreshed 10 Oct 2026, 05:02');
+(function load(){const emb=()=>init(parseData(EMBED),'Refreshed 10 Oct 2026, 05:32');
   if(SHEET_CSV_URL)fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>init(parseData(t),'Live from Google Sheets')).catch(emb);else emb()})();
 </script>
 </body>
